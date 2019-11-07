@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* nav */
+.nav{width: 220px;height: calc(100% - 68px); background:#2A2F3A;transition: all .3s;position:fixed;top: 68px;left: 0;}
+.nav a{display: block;overflow: hidden;padding-left: 20px;line-height: 46px;max-height: 46px;color: #ABB1B7;transition: all .3s;}
+.nav a span{margin-left: 50px;}
+.nav a>span{margin-left: 10px;}
+.nav-item{position: relative;}
+.nav-item.nav-show{border-bottom: none;}
+.nav-item ul{display: none;background: rgba(0,0,0,.1);}
+.nav-item.nav-show ul{display: block;}
+.nav-item>a:before{content: "";position: absolute;left: 0px;width: 4px;height: 46px;background: #05cade;opacity:0;transition: all .3s;}
+.nav .nav-icon{font-size: 20px;position: absolute;margin-left:-1px;}
+
+/*---------------------*/
+.nav-more{float:right;margin-right: 20px;line-height: 46px; transition: transform .3s;}
+
+/*---------------------*/
+.nav-show .nav-more{transform:rotate(90deg);}
+.nav-show,.nav-item>a:hover{color: #FFF;background:rgba(0,0,0,.5);}
+
+.nav-show>a{color: #FFFFFF;}
+.nav-shows{color: #FFF;background:rgba(0,0,0,.5);}
+.nav-shows>a:before,.nav-item>a:hover:before{opacity:1;}
+.nav-shows>a{color: #FFFFFF;}
+.nav-item li:hover a{color: #FFF;background: rgba(0, 0, 0,.9);}

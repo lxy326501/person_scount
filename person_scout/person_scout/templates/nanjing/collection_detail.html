@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pager %}
+{% block title %} 详细内容{% endblock title %}
+{% block content %}
+{% if posts %}
+	{% for posts in posts %}
+		{% if not posts.index %}
+		<div class="row" style="margin: 0;background: none;">
+		{% endif %}
+			<div class="col-lg-9 margin-b-15">
+				<div class="person-introduce row card">
+					<a href="javascript:history.go(-1);">
+					<button class="table-search-ser" style="float: left;" >
+						<i class="fa fa-reply" aria-hidden="true"></i>&nbsp;&nbsp;返回
+					</button> </a>
+					<button id="xg" class="table-search-ser" style="float: right;" value="{{ posts._id }}"> &nbsp;相关
+					</button>
+					<button id="bxg" class="table-search-ser" style="float: right;margin-right: 8px;" value="{{ posts._id }}"> &nbsp;不相关
+					</button>
+					<br>
+					<div class="col-lg-9 person-introduce-r row" style="float: left;">
+						<div class="col-lg-2 person-introduce-tit" align="center">
+							<p>来源：</p>
+							<p>标题：</p>
+							<p>时间：</p>
+						</div>
+						<div class="col-lg-10 person-introduce-content">
+								<a href="{{ posts.url }}" style="color: #25ccde; "><p>{{ posts.url }}</p></a>
+									<p>{{ '\n'.join(posts.title) }}</p>
+										<p>{{ '\n'.join(posts.time) }}</p>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-9 margin-b-15">
+				<div class="person-introduce row card">
+					<div class="person-t" style="word-wrap: normal | break-word ">
+						<p style=" word-wrap: normal | break-word ;">详细内容：</p>
+						<p style=" word-wrap: normal | break-word ;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;({{ '\n'.join(posts.content) }})<br></span></p>
+					</div>
+				</div>
+				<div class="table-search">
+
+				</div>
+			</div>
+		{% if posts.index %}
+		</div>
+		{% endif %}
+		{% if not loop.last %}
+            <hr>
+        {% endif %}
+	{% endfor %}
+{% else %}
+    <div class="tip">
+        <h5>暂无新消息。</h5>
+    </div>
+{% endif %}
+
+{% endblock content %}
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" ntegrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script type='text/javascript' src="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.js"></script>
+    <script type='text/javascript'>
+			$().ready(function(){
+				var $xg = $('#xg');
+				var $bxg = $('#bxg');
+				$xg.click(function () {
+						console.log(xg.value);
+						window.location.href="{{ url_for('collectionNanjing.collection_related') }}"+'?&uid='+xg.value;
+				});
+				$bxg.click(function () {
+						console.log(bxg.value);
+						window.location.href="{{ url_for('collectionNanjing.collection_irrelevant') }}"+'?&uid='+bxg.value;
+				});
+			});
+
+      </script>
+{% endblock scripts%}

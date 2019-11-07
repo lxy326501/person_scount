@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>信息处理平台</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/plug-in.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        {% block nav %}
+        <nav>
+            <div class="nav-logo-box">
+
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">
+                <p>天之卫网安科技</p>
+            </div>
+            <div class="nav-name-box">
+                <p>| &nbsp; 信息处理平台</p>
+            </div>
+            <div class="nav-admin-box">
+                <p>admin</p>
+                <div class="hover-admin">
+                    <div></div>
+                    <button class="hover-admin-font" type="button" data-toggle="modal" data-target="#pw">修改密码</button>
+                    <div style="height: 1px ;width: 80%; background: #666666;margin: auto;"></div>
+                    <button href="" class="hover-admin-font" type="button" data-toggle="modal" data-target="#quit">退出登录</button>
+                    <div></div>
+                </div>
+            </div>
+        </nav>
+        {% endblock nav %}
+        <div class="content">
+            <div class="main-fixed">
+                <div class="main-tit">
+                    <p>{% block title %}{% endblock title %}</p>
+                </div>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="{{ url_for('usermanage.user_list') }}"><i class="fa fa-address-book-o" aria-hidden="true"></i><span>账号管理</span></a>
+                    </li>
+                    <li class="nav-item">
+                       <a href="javascript:;"><i class="fa fa-podcast" aria-hidden="true"></i><span>城市</span><i class="fa fa-angle-right nav-more" aria-hidden="true"></i></a>
+						<ul>
+							<li><a href="{{ url_for('collectionWuxi.user_list') }}"><span>无锡</span></a></li>
+							<li><a href="{{ url_for('collectionNingbo.user_list') }}"><span>宁波</span></a></li>
+							<li><a href="{{ url_for('collectionSuzhou.user_list') }}"><span>苏州</span></a></li>
+                            <li><a href="{{ url_for('collectionHangzhou.user_list') }}"><span>杭州</span></a></li>
+							<li><a href="{{ url_for('collectionXuzhou.collection_list') }}"><span>徐州</span></a></li>
+							<li><a href="{{ url_for('collectionNanjing.collection_list') }}"><span>南京</span></a></li>
+						</ul>
+                    </li>
+
+                </ul>
+                <div class="copyright">
+                    <p>天之卫网安科技</p>
+                    <p>©copyright 2019 版权所有</p>
+                </div>
+            </div>
+
+            <div class="main">
+                {% block content %}{% endblock content %}
+            </div>
+
+        </div>
+
+
+        <!-- pw -->
+        <div class="modal fade" id="pw" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改密码</h4>
+              </div>
+              <div class="modal-body">
+                 <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">原密码</label>
+                    <div class="col-sm-10">
+                      <input type="password" id="old_pw" class="form-control mr-sm-1" placeholder="请输入原密码" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
+                    <div class="col-sm-10">
+                      <input type="password" id="new_pw1" class="form-control mr-sm-1" placeholder="请输入新密码" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+                    <div class="col-sm-10">
+                      <input type="password" id="new_pw2" class="form-control mr-sm-1" placeholder="请确认新密码" required>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-info" onclick="change_password()">保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- quit -->
+        <div class="modal fade" id="quit" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">退出登录</h4>
+              </div>
+              <div class="modal-body">
+                确定要退出当前登录吗？
+              </div>
+              <div class="modal-footer">
+                <button type="button" id='hidden_cp' class="btn btn-default" data-dismiss="modal">取消</button>
+                <a class="btn btn-info" href="{{ url_for('login.logout') }}">确定</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/plug-in.js') }}"></script>
+
+        <script type="text/javascript">
+          function change_password() {
+            new_pw1 = document.getElementById('new_pw1').value
+            new_pw2 = document.getElementById('new_pw2').value
+            if(new_pw1==new_pw2){
+              old_pw = document.getElementById('old_pw').value
+              data = {
+                'new_pw': new_pw1,
+                'old_pw': old_pw
+              }
+              $.ajax({
+                  url:"{{ url_for('login.upd_password') }}",
+                  data: data,
+                  type:'POST',
+                  timeout: 200000,
+                  async:false,
+                  dataType:'json',
+                  success:function(data) {
+                    if (data['code']){
+                      alert('修改成功')
+                      document.getElementById("hidden_cp").click();
+                    }else{
+                      alert('修改失败')
+                    }
+                  },
+                  error:function (msg) {
+                      alert('修改失败')
+                  }
+              })
+            }else{
+              alert('确认密码不一致')
+            }
+          }
+        </script>
+
+        {% block scripts %}
+        {% endblock scripts%}
+    </body>
+</html>

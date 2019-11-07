@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pager %}
+
+{% block title %} 账号管理 {% endblock title %}
+{% block content %}
+			<div class="table-box">
+				<div class="table-search">
+					<div style="float: left;">
+						<button class="table-search-ser" data-toggle="modal" data-target="#add"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp;添加</button>
+					</div>
+					<div style="float: left;margin-left: 10px;">
+            			<button class="table-search-ser "  data-toggle="modal"   data-target="#del"    ><i class="fa fa-trash" aria-hidden="true"></i> &nbsp;删除</button>
+        			</div>
+				</div>
+				  <table
+                    id="table"
+                    data-toolbar="#toolbar"
+                    data-select-item-name="selectItemName"
+                    data-pagination="true"
+                    data-page-list="[10, 25, 50, 100, 200, All]"
+                >
+                </table>
+
+			</div>
+<!-- add -->
+	<div class="modal fade" id="add" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">添加账号</h4>
+		  </div>
+			<form method="get"  action = "{{ url_for('usermanage.add_user') }}" >
+		  <div class="modal-body">
+			<div class="lan-box">
+				<div class="row">
+					<p class="col-lg-2">账号：</p>
+					<div class="col-lg-10">
+						<input type="password" name="user_account"  class="form-control">
+					</div>
+				</div>
+				<div class="row">
+					<p class="col-lg-2">姓名：</p>
+					<div class="col-lg-10">
+						<input type="password"  name="user_true_name" class="form-control">
+					</div>
+				</div>
+				<div class="row">
+					<p class="col-lg-2">电话：</p>
+					<div class="col-lg-10">
+						<input type="password" name="user_phone" class="form-control">
+					</div>
+				</div>
+				<div class="row">
+					<p class="col-lg-2">密码：</p>
+					<div class="col-lg-10">
+						<input type="password" name="user_password" class="form-control">
+					</div>
+				</div>
+				<div class="row">
+					<p class="col-lg-2">权限：</p>
+					<div class="col-lg-10">
+						<select class="form-control" name="selectTest" id="selectid" >
+						   <option value="user">普通用户</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			 <input type="submit" class="btn btn-info"   value="保存" />
+		  </div></form>
+		</div>
+	  </div>
+	</div>
+<!-- edit -->
+	<div class="modal fade" id="edit" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">修改</h4>
+		  </div>
+			<form method="get"  action = "{{ url_for('usermanage.upd_user') }}" >
+
+		  <div class="modal-body">
+		  			<div class="lan-box">
+		  				<div class="row">
+		  					<p class="col-lg-2">账号：</p>
+		  					<div class="col-lg-10">
+								<input name="_id" id="_id" type="hidden"/>
+		  						<input name="user_account" id = "zhanghao"   class="form-control">
+		  					</div>
+		  				</div>
+		  				<div class="row">
+		  					<p class="col-lg-2">姓名：</p>
+		  					<div class="col-lg-10">
+		  						<input type="text" name="user_true_name"  id = "guan"    class="form-control">
+		  					</div>
+		  				</div>
+		  				<div class="row">
+		  					<p class="col-lg-2">电话：</p>
+		  					<div class="col-lg-10">
+		  						<input type="text"  name="user_phone" id="phone" class="form-control">
+		  					</div>
+		  				</div>
+		  				<div class="row">
+		  					<p class="col-lg-2">密码：</p>
+		  					<div class="col-lg-10">
+		  						<input type="password" name="user_password" id="password" class="form-control">
+		  					</div>
+		  				</div>
+		  			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			<button type="submit" class="btn btn-info" id="data">确定</button>
+		  </div></form>
+		</div>
+	  </div>
+	</div>
+<!-- del -->
+	<div class="modal fade" id="del" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">退出登录</h4>
+		  </div>
+		  <div class="modal-body">
+			确定要删除该账号吗？
+		  </div>
+<!--			<form method="get"  action = "{{ url_for('usermanage.delete_user') }}" >-->
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			<button type="button" class="btn btn-info" id = "delete">确定</button>
+		  </div>
+<!--			</form>-->
+		</div>
+	  </div>
+	</div>
+{% endblock content %}
+{% block scripts %}
+
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" ntegrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script type='text/javascript' src="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.js"></script>
+    <script type='text/javascript'>
+
+     $().ready(function(){
+           	var data = {{ data | tojson}}
+            var columns = {{ columns | tojson }}
+            var $table = $('#table');
+            var $delete = $('#delete');
+            var $data = $('#data');
+
+            $delete.click(function () {
+                var index = [];
+                $('input[name="selectItemName"]:checked').each(function () {
+                    index.push($(this).data('index'));
+                })
+                console.log(index);
+                var sdata = {'info':[]};
+                //var sdata = [];
+                for(i in index){
+                    data =  $table.bootstrapTable('getData')[index[i]];
+                    sdata['info'].push(data);
+                }
+                console.log(sdata);
+                $.ajax({
+                        url:"{{ url_for('usermanage.delete_user') }}",
+                        data: sdata,
+                        type:'post',
+                        timeout: 200000,
+                        async:false,
+                        dataType:'json',
+                        success:function(data) {
+                            location.reload(true);
+                        },
+                        error:function (msg) {
+                            location.reload(true);
+                        }
+                })
+            })
+
+              $(function() {
+                $('#table').bootstrapTable({
+                    data: data,
+                    columns: columns,
+                    pageSize: 5,
+                    clickToSelect: true,
+                    formatLoadingMessage: function() {
+                        return '';
+                    }
+                });
+                $table.on('check.bs.table uncheck.bs.table ' +
+                          'check-all.bs.table uncheck-all.bs.table',
+                            function(){
+                                $delete.prop('disabled', !$table.bootstrapTable('getSelections').length);
+                });
+            });
+            function getValue(){
+        		var str = $("#selectid option:selected").val();   //获得选中的值
+        		$.ajax({
+            		type:"post",
+            		dataType:"json",
+            		url:"{{ url_for('usermanage.add_user') }}",
+            		data:{'select':str},
+            		success:function(msg){
+                		if(msg){
+                    		alert(msg);
+                		}
+            		}
+        		});
+    		}
+
+            $(function() {
+            	$(document).on("click",".RoleOf", function(){
+                 	var $table = $('#table');
+                    var rindex = $(this).parent().parent().parent().attr('data-index');
+                    var node = $table.bootstrapTable('getData')[rindex];
+
+                    document.getElementById("zhanghao").value = node.user_account;
+                    document.getElementById("guan").value = node.user_true_name;
+                    document.getElementById("phone").value = node.user_phone;
+                    document.getElementById("password").value = node.user_password;
+                    document.getElementById("_id").value = node._id;
+                    console.log(node.user_account);
+                    console.log(node._id);
+                    document.getElementById("admin").value = node.user_permission;
+
+                    console.log(node);
+                });
+
+
+
+
+            });
+        });
+      </script>
+
+{% endblock scripts%}

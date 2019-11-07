@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pager %}
+
+{% block title %} 城市 - 杭州 - 未处理{% endblock title %}
+
+	{% block content %}
+				<div class="table-box">
+					<div class="table-search">
+						<form method="get"  action = "{{ url_for('collectionHangzhou.collection_related_view') }}" >
+						<div style="float: left;">
+							<button class="table-search-ser" data-toggle="modal" value="xiangg">&nbsp;相关</button>
+						</div>
+						</form>
+						<form method="get"  action = "{{ url_for('collectionHangzhou.collection_irrelevant_view') }}" >
+						<div style="float: left;margin-left: 10px;">
+							<button class="table-search-ser" data-toggle="modal" value="hahaa">&nbsp;不相关</button>
+						</div>
+						</form>
+						<form method="get"  action = "{{ url_for('collectionHangzhou.collection_irrelevant_views') }}" >
+						<div style="float: left;margin-left: 10px;">
+							<button class="table-search-ser" data-toggle="modal" value="hahaa">&nbsp;未处理</button>
+						</div></form>
+					</div>
+					<table
+						class="table table-bordered table-striped"
+                    	id="table"
+						data-pagination="true"
+                    	data-page-list="[10, 25, 50, 100, 200, All]"
+
+                		>
+                	</table>
+
+				</div>
+
+{% endblock content %}
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" ntegrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script type='text/javascript' src="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.js"></script>
+    <script type='text/javascript'>
+		$().ready(function(){
+            var data = {{ data | tojson }};
+            var columns = {{ columns | tojson }};
+            var $table = $('#table');
+            $(function() {
+                $('#table').bootstrapTable({
+                    data: data,
+                    columns: columns,
+                    pageSize: 20,
+                    clickToSelect: true,
+                    formatLoadingMessage: function() {
+                        return '';
+                    }
+                });
+                $table.on('check.bs.table uncheck.bs.table ' +
+                          'check-all.bs.table uncheck-all.bs.table',
+                            function(){
+                                $delete.prop('disabled', !$table.bootstrapTable('getSelections').length);
+                });
+            });
+			  $(function() {
+			  	//.click只能为页面现有的元素绑定点击事件，如果是动态生成的新的元素，是没有事件的
+        	 	//而$(document).on("click","指定的元素",function(){});方法则是将指定的事件绑定在document上，而新产生的元素如果符合指定的元素，那就触发此事件
+			  	 $(document).on("click",".form", function(){
+                    var $table = $('#table');
+                    var rindex = $(this).parent().parent().attr('data-index');
+                    var node = $table.bootstrapTable('getData')[rindex];
+                    console.log(node.meta.url);
+                    window.location.href= node.meta.url;
+
+                });
+                $(document).on("click",".icon-btn", function(){
+                    var $table = $('#table');
+                    var rindex = $(this).parent().parent().attr('data-index');
+                    var node = $table.bootstrapTable('getData')[rindex];
+                    console.log(node);
+					window.location.href="{{ url_for('collectionHangzhou.collection_detail') }}"+'?&uid='+node._id;
+                });
+
+
+            });
+        });
+
+
+
+      </script>
+{% endblock scripts%}
+

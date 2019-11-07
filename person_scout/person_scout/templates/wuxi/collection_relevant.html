@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pager %}
+
+{% block title %} 城市-无锡-相关 {% endblock title %}
+
+	{% block content %}
+				<div class="table-box">
+					<div class="table-search">
+						<form method="get"  action = "{{ url_for('collectionWuxi.collection_related_view') }}" >
+						<div style="float: left;">
+							<button class="table-search-ser" data-toggle="modal" value="xiangg">&nbsp;相关</button>
+						</div>
+						</form>
+						<form method="get"  action = "{{ url_for('collectionWuxi.collection_irrelevant_view') }}" >
+						<div style="float: left;margin-left: 10px;">
+							<button class="table-search-ser" data-toggle="modal" value="hahaa">&nbsp;不相关</button>
+						</div>
+						</form>
+						<form method="get"  action = "{{ url_for('collectionWuxi.collection_irrelevant_views') }}" >
+						<div style="float: left;margin-left: 10px;">
+							<button class="table-search-ser" data-toggle="modal" value="hahaa">&nbsp;未处理</button>
+						</div></form>
+					</div>
+					<table
+						class="table table-bordered table-striped"
+                    	id="table"
+						data-pagination="true"
+                    	data-page-list="[10, 25, 50, 100, 200, All]"
+
+                		>
+                	</table>
+
+				</div>
+
+{% endblock content %}
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" ntegrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script type='text/javascript' src="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.js"></script>
+    <script type='text/javascript'>
+		$().ready(function(){
+            var data = {{ data | tojson }};
+            var columns = {{ columns | tojson }};
+            var $table = $('#table');
+            var $delete = $('#delete');
+
+            $(function() {
+                $('#table').bootstrapTable({
+                    data: data,
+                    columns: columns,
+                    pageSize: 20,
+                    clickToSelect: true,
+                    formatLoadingMessage: function() {
+                        return '';
+                    }
+                });
+                $table.on('check.bs.table uncheck.bs.table ' +
+                          'check-all.bs.table uncheck-all.bs.table',
+                            function(){
+                                $delete.prop('disabled', !$table.bootstrapTable('getSelections').length);
+                });
+            });
+			$(function() {
+				 $(document).on("click",".form", function(){
+                    var $table = $('#table');
+                    var rindex = $(this).parent().parent().attr('data-index');
+                    var node = $table.bootstrapTable('getData')[rindex];
+                    console.log(node.meta.url);
+                    window.location.href= node.meta.url;
+
+                });
+                $(document).on("click",".icon-btn", function(){
+                    var $table = $('#table');
+                    var rindex = $(this).parent().parent().attr('data-index');
+                    var node = $table.bootstrapTable('getData')[rindex];
+                    console.log(node);
+					window.location.href="{{ url_for('collectionWuxi.collection_detail') }}"+'?&uid='+node._id;
+                });
+                  $(document).on("click",".icon-btn1", function(){
+                    var $table = $('#table');
+                    var rindex = $(this).parent().parent().attr('data-index');
+                    var node = $table.bootstrapTable('getData')[rindex];
+                    console.log(node);
+					window.location.href="{{ url_for('collectionWuxi.collection_related') }}"+'?&uid='+node._id;
+
+                });
+                  $(document).on("click",".icon-btn2", function(){
+                    var $table = $('#table');
+                    var rindex = $(this).parent().parent().attr('data-index');
+                    var node = $table.bootstrapTable('getData')[rindex];
+                    console.log(node);
+					window.location.href="{{ url_for('collectionWuxi.collection_irrelevant') }}"+'?&uid='+node._id;
+
+                });
+            });
+        });
+
+
+
+      </script>
+{% endblock scripts%}
